@@ -94,20 +94,20 @@ chmod +x ./index.js
 This section explains how to configure basic settings with an IAM user. These include your security credentials using the `config` and `credentials` files.
 ### Step 1: Create your IAM user
 Create a user in AWS Identity and Access Management and assign a name.
-![[Screenshot 2025-10-03 at 2.52.51 PM.png]]
+![Screenshot 2025-10-03 at 2.52.51 PM.png](Assets/Screenshot%202025-10-03%20at%202.52.51%20PM.png)
 ### Step 2: Assign `SecurityAudit` Permission
 
-![[Screenshot 2025-10-03 at 2.53.23 PM.png]]
+![Screenshot 2025-10-03 at 2.53.23 PM.png](Assets/Screenshot%202025-10-03%20at%202.53.23%20PM.png)
 ### Step 3: Create User
-![[Screenshot 2025-10-03 at 2.55.15 PM.png]]
+![Screenshot 2025-10-03 at 2.55.15 PM.png](Assets/Screenshot%202025-10-03%20at%202.55.15%20PM.png)
 ### Step 4: Generating Access Keys
-![[Screenshot 2025-10-03 at 2.57.13 PM.png]]
+![Screenshot 2025-10-03 at 2.57.13 PM.png](Assets/Screenshot%202025-10-03%20at%202.57.13%20PM.png)
 ### Step 5
-![[Screenshot 2025-10-03 at 3.00.20 PM.png]]
+![Screenshot 2025-10-03 at 3.00.20 PM.png](Assets/Screenshot%202025-10-03%20at%203.00.20%20PM.png)
 ### Step 6
-![[Screenshot 2025-10-03 at 3.01.54 PM.png]]
+![Screenshot 2025-10-03 at 3.01.54 PM.png](Assets/Screenshot%202025-10-03%20at%203.01.54%20PM.png)
 ### Step 7
-![[Screenshot 2025-10-03 at 3.02.30 PM.png]]
+![Screenshot 2025-10-03 at 3.02.30 PM.png](Assets/Screenshot%202025-10-03%20at%203.02.30%20PM.png)
 ### Step 8: Configure the AWS CLI
 For general use, the `aws configure` command is the fastest way to set up your AWS CLI installation. This configure wizard prompts you for each piece of information you need to get started. Unless otherwise specified by using the `--profile` option, the AWS CLI stores this information in the `default` profile.
 
@@ -191,14 +191,14 @@ python scout.py aws
 ### Setting up Service Principal
 #### Step 1: Sign in to the [Microsoft Entra admin center](https://entra.microsoft.com) as at least a [Cloud Application Administrator](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference#cloud-application-administrator).
 #### Step 2: Browse to Entra ID > App registrations then select New registration
-![[Screenshot 2025-10-06 at 8.52.31 AM.png]]
+![Screenshot 2025-10-06 at 8.52.31 AM.png](Assets/Screenshot%202025-10-06%20at%208.52.31%20AM.png)
 #### Step 3
 - Give the application a name, such as `CSPMScanner`.
 - Under Supported account types, select `Accounts in this organizational directory only`.
 - Under Redirect URI, select Web for the type of application you want to create. Enter the URI where the access token is sent to. (**Optional**)
 - Select Register
-![[Screenshot 2025-10-06 at 8.56.54 AM.png]]
-![[Screenshot 2025-10-06 at 8.59.39 AM.png]]
+![Screenshot 2025-10-06 at 8.56.54 AM.png](Assets/Screenshot%202025-10-06%20at%208.56.54%20AM.png)
+![Screenshot 2025-10-06 at 8.59.39 AM.png](Assets/Screenshot%202025-10-06%20at%208.59.39%20AM.png)
 ### Assign a role to the application 
 #### Step 4
 - Sign in to the [Azure portal](https://portal.azure.com).
@@ -206,24 +206,24 @@ python scout.py aws
 - In the new window, select the subscription to want to modify. If you don't see the subscription you're looking for, select **global subscriptions filter**. Make sure the subscription you want is selected for the tenant.
 - In the left pane, select Access control (IAM).
 - Select Add, then select Add role assignment
-![[Screenshot 2025-10-06 at 9.07.53 AM.png]]
+![Screenshot 2025-10-06 at 9.07.53 AM.png](Assets/Screenshot%202025-10-06%20at%209.07.53%20AM.png)
 #### Step 5
 - In the Role tab, select the `Security Reader` role to assign to the application in the list, then select Next.
-![[Screenshot 2025-10-06 at 9.17.15 AM.png]]
+![Screenshot 2025-10-06 at 9.17.15 AM.png](Assets/Screenshot%202025-10-06%20at%209.17.15%20AM.png)
 - On the Members tab, for Assign access to, select User, group, or service principal.
 - Select Select members. By default, Microsoft Entra applications aren't displayed in the available options. To find your application, search for it by name and select it so it appears under `Selected members:` field.
-![[Screenshot 2025-10-06 at 9.11.50 AM.png]]
+![Screenshot 2025-10-06 at 9.11.50 AM.png](Assets/Screenshot%202025-10-06%20at%209.11.50%20AM.png)
 - Select the Select button, then select Review + assign.
-![[Screenshot 2025-10-06 at 9.18.19 AM.png]]
+![Screenshot 2025-10-06 at 9.18.19 AM.png](Assets/Screenshot%202025-10-06%20at%209.18.19%20AM.png)
 #### Step 6: Repeat the above steps for the roles `Log Analytics Reader` and `Reader`.
 ### Setting up access
 #### Step 7: Create a new client secret
 - Click `+ New client secret` then select add
 - Note down the `value` field as it will not be shown again.
-![[Screenshot 2025-10-06 at 10.11.30 AM.png]]
+![Screenshot 2025-10-06 at 10.11.30 AM.png](Assets/Screenshot%202025-10-06%20at%2010.11.30%20AM.png)
 #### Step 8: 
 - Under `API permissions` select `Request API Permissions` and add `Directory.Read.All` and `Policy.Read.All` permissions.
-![[Screenshot 2025-10-06 at 10.18.18 AM.png]]
+![Screenshot 2025-10-06 at 10.18.18 AM.png](Assets/Screenshot%202025-10-06%20at%2010.18.18%20AM.png)
 #### Step 9: Setting up credentials for `cloudsploit`
 
 | Value           | Description                    |
@@ -232,9 +232,9 @@ python scout.py aws
 | Client Secret   | Secret to Connect to the App   |
 | Tenant ID       | Microsoft Entra Tenant ID      |
 | Subscription ID | Microsoft subscription plan ID |
-![[Screenshot 2025-10-06 at 10.33.13 AM.png]]
-![[Screenshot 2025-10-06 at 10.34.52 AM.png]]
-![[Screenshot 2025-10-07 at 3.53.19 PM.png]]
+![Screenshot 2025-10-06 at 10.33.13 AM.png](Assets/Screenshot%202025-10-06%20at%2010.33.13%20AM.png)
+![Screenshot 2025-10-06 at 10.34.52 AM.png](Assets/Screenshot%202025-10-06%20at%2010.34.52%20AM.png)
+![Screenshot 2025-10-07 at 3.53.19 PM.png](Assets/Screenshot%202025-10-07%20at%203.53.19%20PM.png)
 - First copy the example config file
 ```bash
 cp config_example.js config.js
@@ -292,7 +292,7 @@ Client secret: <application secret value>
 ### Creating Security Audit Role (CloudSploit)
 #### Step 1: Activate "cloud" shell
 - Select the top right terminal icon and activate cloud shell
-![[Screenshot 2025-10-08 at 8.44.10 AM.png]]
+![Screenshot 2025-10-08 at 8.44.10 AM.png](Assets/Screenshot%202025-10-08%20at%208.44.10%20AM.png)
 #### Step 2
 - Copy and paste the following code into a file `aqua-security-audit-role.yaml`, feel free to use vim/nano.
 - Note! Exclude all rows starting with 'resourcemanager' if you do not use Organization.
@@ -357,10 +357,10 @@ gcloud iam roles create AquaCSPMSecurityAudit --project=trusty<SNIP>h1 --file=aq
 ```
 ### Setting up Service Account
 #### Step 4: Navigate to `IAM Admin > Service Accounts` and click on `Create Service Account`
-![[Screenshot 2025-10-08 at 8.38.43 AM.png]]
+![Screenshot 2025-10-08 at 8.38.43 AM.png](Assets/Screenshot%202025-10-08%20at%208.38.43%20AM.png)
 #### Step 5 
 - Fill in Service account name and description then select `Create and continue`
-![[Screenshot 2025-10-08 at 8.40.45 AM.png]]
+![Screenshot 2025-10-08 at 8.40.45 AM.png](Assets/Screenshot%202025-10-08%20at%208.40.45%20AM.png)
 #### Step 6
 - Add the following roles:
 	- `Viewer`
@@ -368,10 +368,10 @@ gcloud iam roles create AquaCSPMSecurityAudit --project=trusty<SNIP>h1 --file=aq
 	- `Stackdriver Accounts Viewer`
 	- `Aqua CSPM Security Audit`
 - Select `Done`
-![[Screenshot 2025-10-08 at 9.11.27 AM.png]]
+![Screenshot 2025-10-08 at 9.11.27 AM.png](Assets/Screenshot%202025-10-08%20at%209.11.27%20AM.png)
 #### Step 7
 - Next Navigate the `Keys` and click on `Create new key` and select `JSON`. The key will be downloaded onto your machine.
-![[Screenshot 2025-10-08 at 9.13.48 AM.png]]
+![Screenshot 2025-10-08 at 9.13.48 AM.png](Assets/Screenshot%202025-10-08%20at%209.13.48%20AM.png)
 #### Step 8:
 - First copy the example config file
 ```bash
