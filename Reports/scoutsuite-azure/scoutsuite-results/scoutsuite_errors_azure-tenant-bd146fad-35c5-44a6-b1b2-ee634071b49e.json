@@ -1,0 +1,72 @@
+[
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"users?$filter=userType+eq+%27Guest%27\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"groups\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"servicePrincipals\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"applications\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"policies/authorizationPolicy\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to retrieve pricings: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status",
+        "file": "securitycenter.py",
+        "line": 22,
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 22, in get_pricings\n    pricings_list = await run_concurrently(\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/utils.py\", line 27, in run_concurrently\n    return await run_function_concurrently(function)\n  File \"/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 23, in <lambda>\n    lambda: client.pricings.list()\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/mgmt/security/operations/_pricings_operations.py\", line 87, in list\n    map_error(status_code=response.status_code, response=response, error_map=error_map)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/exceptions.py\", line 163, in map_error\n    raise error\nazure.core.exceptions.ResourceNotFoundError: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status\n"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to retrieve auto provisioning settings: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status",
+        "file": "securitycenter.py",
+        "line": 46,
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 46, in get_auto_provisioning_settings\n    return await run_concurrently(\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/utils.py\", line 27, in run_concurrently\n    return await run_function_concurrently(function)\n  File \"/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 47, in <lambda>\n    lambda: list(client.auto_provisioning_settings.list())\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 136, in __next__\n    return next(self._page_iterator)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 82, in __next__\n    self._response = self._get_next(self.continuation_token)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/mgmt/security/operations/_auto_provisioning_settings_operations.py\", line 105, in get_next\n    map_error(status_code=response.status_code, response=response, error_map=error_map)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/exceptions.py\", line 163, in map_error\n    raise error\nazure.core.exceptions.ClientAuthenticationError: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status\n"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to retrieve settings: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status",
+        "file": "securitycenter.py",
+        "line": 65,
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 65, in get_settings\n    return await run_concurrently(\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/utils.py\", line 27, in run_concurrently\n    return await run_function_concurrently(function)\n  File \"/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 66, in <lambda>\n    lambda: list(client.settings.list())\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 136, in __next__\n    return next(self._page_iterator)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 82, in __next__\n    self._response = self._get_next(self.continuation_token)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/mgmt/security/operations/_settings_operations.py\", line 105, in get_next\n    map_error(status_code=response.status_code, response=response, error_map=error_map)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/exceptions.py\", line 163, in map_error\n    raise error\nazure.core.exceptions.ClientAuthenticationError: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status\n"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to retrieve regulatory compliance standards: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status",
+        "file": "securitycenter.py",
+        "line": 124,
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 124, in get_regulatory_compliance_results\n    compliance_standards = await run_concurrently(\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/utils.py\", line 27, in run_concurrently\n    return await run_function_concurrently(function)\n  File \"/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/ScoutSuite/providers/azure/facade/securitycenter.py\", line 125, in <lambda>\n    lambda: list(client.regulatory_compliance_standards.list())\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 136, in __next__\n    return next(self._page_iterator)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/paging.py\", line 82, in __next__\n    self._response = self._get_next(self.continuation_token)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/mgmt/security/operations/_regulatory_compliance_standards_operations.py\", line 110, in get_next\n    map_error(status_code=response.status_code, response=response, error_map=error_map)\n  File \"/Users/weiyanglow/Documents/Projects/ScoutSuite/venv/lib/python3.10/site-packages/azure/core/exceptions.py\", line 163, in map_error\n    raise error\nazure.core.exceptions.ClientAuthenticationError: (Subscription Not Registered) Please register to Microsoft.Security in order to view your security status\nCode: Subscription Not Registered\nMessage: Please register to Microsoft.Security in order to view your security status\n"
+    },
+    {
+        "additional_details": null,
+        "exception": "Failed to query Microsoft Graph endpoint \"users?$filter=id+eq+%2739a3cfa5-9fde-45f1-a483-6bb1e1b8ac5b%27\": status code 403",
+        "file": null,
+        "line": null,
+        "traceback": "None"
+    }
+]
