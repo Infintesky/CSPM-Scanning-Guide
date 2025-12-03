@@ -8,11 +8,7 @@ This repository contains Markdown documentation for different purposes and instr
    - File: `src/Master Guide.md`
    - Description: The full guide for reference.
 
-2. **Internal Usage**
-   - File: `src/Internal Usage.md`
-   - Description: Documentation for internal teams on how to run and export VA scan results.
-
-3. **Client Onboarding**
+2. **Client Onboarding**
    - File: `src/Client Onboarding.md`
    - Description: Information that needs to be provisioned from the client.
 
