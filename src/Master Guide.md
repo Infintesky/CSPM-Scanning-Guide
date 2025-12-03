@@ -169,18 +169,20 @@ aws: {
 ```bash
 # Prowler
 # Default Run
-poetry run python ./prowler-cli.py aws
-
-# Execute checks based on requirements defined in compliance frameworks
-poetry run python ./prowler-cli.py aws --list-compliance
-poetry run python ./prowler-cli.py aws --compliance <compliance_framework>
+poetry run python ./prowler-cli.py aws -p awsecrrole
 
 # ScoutSuite
-python scout.py aws
+python scout.py aws -profile awsecrrole
 
 # CloudSploit
-./index.js --config=./config.js --cloud=aws --compliance=cis --csv=cloudsploit_aws.csv --console=table
+./index.js --config=./config.js --cloud=aws --csv=cloudsploit_aws.csv --console=table
 ```
+#### aws sts assume role
+When configuring CloudSploit with AWS role assumption, use the following command to retrieve temporary access credentials for the assumed role:
+```
+aws sts assume-role --role-arn <role-arn> --role-session-name <session-name>
+```
+The command returns temporary security credentials (access key ID, secret access key, and session token) that should be configured in your CloudSploit setup.
 ### Exporting Results
 ```bash
 # Prowler
@@ -285,14 +287,14 @@ export AZURE_CLIENT_SECRET="dtA8Q<SNIP>lIcuv"
 poetry run python ./prowler-cli.py azure --sp-env-auth
 
 # ScoutSuite
-python scout.py azure --tenant <tenant id> --service-principal                                                              
+python scout.py azure --tenant <tenant id> --service-principal --subscriptions <subscription_A> <subscription_B>                                                            
 2025-10-06 10:24:19 <SNIP> scout[28193] INFO Launching Scout
 2025-10-06 10:24:19 <SNIP> scout[28193] INFO Authenticating to cloud provider
 Client ID: <application id>
 Client secret: <application secret value>
 
 # CloudSploit
-./index.js --config=./config.js --cloud=azure --compliance=pci --csv=cloudsploit_azure.csv --console=table
+./index.js --config=./config.js --cloud=azure --csv=cloudsploit_azure.csv --console=table
 ```
 ### Exporting Results
 ```bash

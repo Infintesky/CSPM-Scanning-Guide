@@ -21,7 +21,7 @@ This repository contains Markdown documentation for different purposes and instr
 - `src/`– Contains all Markdown guides.  
 - `distrib/` – Contains editable `.docx` files generated from the Markdown guides.  
 - `assets/` – Contains screenshots used in the Markdown guides.  
-- `output/` – Contains sample reports and exported files.  
+- `tools/` – Contains tools to convert json/js files from CSPM tool output into csv format.  
 
 ## Generate DOCX from Markdown
 
