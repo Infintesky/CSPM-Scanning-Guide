@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Convert ScoutSuite AWS results (JS format) to CSV with all findings
+Convert ScoutSuite results (JS format) to CSV with all findings.
 """
 
 import json
@@ -19,62 +19,100 @@ def parse_scoutsuite_js(filepath: str) -> dict:
     return json.loads(json_str)
 
 
-def resolve_resource_path(data: dict, path: str) -> dict | None:
-    """
-    Resolve a ScoutSuite resource path to the actual resource object.
-    Paths look like: 'iam.users.USERID.some_flag' or 's3.buckets.BUCKETID.something'
-    """
-    parts = path.split('.')
-    current = data.get('services', {})
-    
-    for part in parts:
-        if isinstance(current, dict):
-            # Try direct key access
-            if part in current:
-                current = current[part]
-            # Try 'regions' nested structure (e.g., ec2.regions.us-east-1.instances.ID)
-            elif part == 'id':
-                # 'id' is a placeholder, skip it
-                continue
-            else:
-                return None
-        else:
-            return None
-    
-    return current if isinstance(current, dict) else None
+import re
 
 
-def get_arn_from_path(data: dict, item_path: str) -> str:
+def strip_html_tags(text: str) -> str:
+    """Remove HTML tags and clean up whitespace."""
+    if not text:
+        return ''
+    # Remove HTML tags
+    clean = re.sub(r'<[^>]+>', ' ', text)
+    # Normalize whitespace
+    clean = re.sub(r'\s+', ' ', clean).strip()
+    return clean
+
+
+def extract_scout_id(item_path: str) -> str:
+    """Extract scout ID from a resource path."""
+    import re
+    # Match scoutid-XXX pattern
+    match = re.search(r'(scoutid-[a-f0-9]+)', item_path)
+    return match.group(1) if match else ''
+
+
+def get_resource_from_path(data: dict, item_path: str) -> dict | None:
     """
-    Extract ARN from a resource path.
-    Item paths look like: 'iam.users.USERID.flag' - we want the resource (user), not the flag.
+    Navigate a ScoutSuite path and return the deepest resource object found.
     """
     parts = item_path.split('.')
-    
     services = data.get('services', {})
     
     current = services
-    resource_with_arn = None
+    last_resource = None
     
-    for i, part in enumerate(parts):
+    for part in parts:
         if not isinstance(current, dict):
             break
         
         if part in current:
             current = current[part]
-            # Check if this level has an ARN
-            if isinstance(current, dict) and 'arn' in current:
-                resource_with_arn = current
+            # If it looks like a resource (has 'name' or 'id'), remember it
+            if isinstance(current, dict) and ('name' in current or 'id' in current):
+                last_resource = current
         else:
             break
     
-    if resource_with_arn:
-        return resource_with_arn.get('arn', '')
+    return last_resource
+
+
+def get_resource_id(data: dict, item_path: str, provider: str) -> str:
+    """
+    Extract resource identifier from a path.
+    - AWS: returns ARN
+    - Azure: constructs resource ID from components
+    """
+    resource = get_resource_from_path(data, item_path)
+    
+    if not resource:
+        return ''
+    
+    if provider == 'aws':
+        return resource.get('arn', '')
+    
+    elif provider == 'azure':
+        # Try to find existing full resource ID
+        for key in ['resource_id', 'id']:
+            val = resource.get(key, '')
+            if isinstance(val, str) and '/subscriptions/' in val:
+                return val
+        
+        # Construct Azure resource ID from components
+        # Path format: service.subscriptions.SUB_ID.resource_type.RESOURCE_ID
+        parts = item_path.split('.')
+        subscription_id = None
+        for i, part in enumerate(parts):
+            if part == 'subscriptions' and i + 1 < len(parts):
+                subscription_id = parts[i + 1]
+                break
+        
+        name = resource.get('name', '')
+        rg = resource.get('resource_group_name', '')
+        rtype = resource.get('type', '')
+        
+        if subscription_id and name and rg and rtype:
+            return f"/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/{rtype}/{name}"
+        elif subscription_id and name:
+            return f"/subscriptions/{subscription_id}/.../{name}"
+        elif name:
+            return name
+        
+        return ''
     
     return ''
 
 
-def extract_all_findings(data: dict) -> list[dict]:
+def extract_all_findings(data: dict, provider: str) -> list[dict]:
     """Extract all findings (flagged or not), one row per affected resource."""
     findings_list = []
     
@@ -100,8 +138,8 @@ def extract_all_findings(data: dict) -> list[dict]:
                 'flagged': flagged,
                 'flagged_items': finding.get('flagged_items', 0),
                 'checked_items': finding.get('checked_items', 0),
-                'rationale': finding.get('rationale', ''),
-                'remediation': finding.get('remediation') or '',
+                'rationale': strip_html_tags(finding.get('rationale', '')),
+                'remediation': strip_html_tags(finding.get('remediation') or ''),
                 'references': '; '.join(finding.get('references') or []) if isinstance(finding.get('references'), list) else str(finding.get('references') or ''),
                 'compliance': json.dumps(finding.get('compliance')) if finding.get('compliance') else '',
             }
@@ -111,16 +149,36 @@ def extract_all_findings(data: dict) -> list[dict]:
                 for item_path in items:
                     row = base_info.copy()
                     row['resource_path'] = item_path
-                    row['arn'] = get_arn_from_path(data, item_path)
+                    row['resource_id'] = get_resource_id(data, item_path, provider)
+                    row['scout_id'] = extract_scout_id(item_path)
                     findings_list.append(row)
             else:
                 # No specific items - just one row for the finding
                 row = base_info.copy()
                 row['resource_path'] = ''
-                row['arn'] = ''
+                row['resource_id'] = ''
+                row['scout_id'] = ''
                 findings_list.append(row)
     
     return findings_list
+
+
+def detect_provider(data: dict) -> str:
+    """Detect cloud provider from ScoutSuite data."""
+    provider_code = data.get('provider_code', '').lower()
+    if provider_code:
+        return provider_code
+    
+    # Fallback: check service names
+    services = data.get('services', {})
+    if 'ec2' in services or 'iam' in services or 's3' in services:
+        return 'aws'
+    elif 'virtualmachines' in services or 'storageaccounts' in services or 'aad' in services:
+        return 'azure'
+    elif 'computeengine' in services or 'cloudstorage' in services:
+        return 'gcp'
+    
+    return 'unknown'
 
 
 def write_csv(findings: list[dict], output_path: str):
@@ -131,7 +189,7 @@ def write_csv(findings: list[dict], output_path: str):
     
     fieldnames = [
         'account_id', 'environment', 'service', 'finding_id', 'description',
-        'level', 'flagged', 'flagged_items', 'checked_items', 'arn', 'resource_path',
+        'level', 'flagged', 'flagged_items', 'checked_items', 'scout_id', 'resource_id', 'resource_path',
         'rationale', 'remediation', 'references', 'compliance'
     ]
     
@@ -152,7 +210,10 @@ def main():
     output_path = sys.argv[2] if len(sys.argv) > 2 else Path(input_path).stem + '_findings.csv'
     
     data = parse_scoutsuite_js(input_path)
-    findings = extract_all_findings(data)
+    provider = detect_provider(data)
+    print(f"Detected provider: {provider}")
+    
+    findings = extract_all_findings(data, provider)
     write_csv(findings, output_path)
 
 
